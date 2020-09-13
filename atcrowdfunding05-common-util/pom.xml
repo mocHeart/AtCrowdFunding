@@ -11,5 +11,14 @@
 
     <artifactId>atcrowdfunding05-common-util</artifactId>
 
+    <dependencies>
+        <!-- 引入Servlet容器中的相关依赖 -->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+
 
 </project>
