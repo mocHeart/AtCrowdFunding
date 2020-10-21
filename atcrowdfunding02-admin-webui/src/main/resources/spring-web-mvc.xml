@@ -31,4 +31,8 @@
         </property>
     </bean>
 
+    <!-- 配置View-Controller 将请求地址与视图直接映射 -->
+    <mvc:view-controller path="/admin/to/login/page.html" view-name="admin-login"/>
+
+
 </beans>

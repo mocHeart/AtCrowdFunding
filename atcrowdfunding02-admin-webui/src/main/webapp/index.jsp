@@ -17,6 +17,7 @@
 
   <%-- Jquery --%>
   <script type="text/javascript" src="jquery/jquery-2.1.1.min.js"></script>
+  <script type="text/javascript" src="layer/layer.js"></script>
 
 </head>
 <body>
@@ -34,6 +35,10 @@
   <br>
   <br>
   <button id="btn3">Send [5, 8, 12] three</button>
+
+  <br>
+  <br>
+  <button id="btn4">点我弹框</button>
 
 
   <script type="text/javascript">
@@ -95,6 +100,15 @@
               })
           });
       });
+
+      // layer演示
+      $(function () {
+          $("#btn4").click(function () {
+              layer.msg("Layer的弹框！");
+          });
+      });
+
+
 
   </script>
 </body>
