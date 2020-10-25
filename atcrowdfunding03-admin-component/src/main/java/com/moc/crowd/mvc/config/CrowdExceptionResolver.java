@@ -2,6 +2,7 @@ package com.moc.crowd.mvc.config;
 
 import com.google.gson.Gson;
 import com.moc.crowd.constant.CrowdConstant;
+import com.moc.crowd.exception.LoginFailedException;
 import com.moc.crowd.util.CrowdUtil;
 import com.moc.crowd.util.ResultEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -24,6 +25,15 @@ public class CrowdExceptionResolver {
         String viewName = "system-error";
         return commonResolve(viewName, exception, request, response);
     }
+
+    @ExceptionHandler(value = LoginFailedException.class)
+    public ModelAndView resolveLoginFailedException(LoginFailedException exception,
+                                                    HttpServletRequest request,
+                                                    HttpServletResponse response) throws IOException {
+        String viewName = "admin-login";
+        return commonResolve(viewName, exception, request, response);
+    }
+
 
     /**
      * 具体的异常类型和一个方法关联起来的公共方法

@@ -40,6 +40,10 @@
   <br>
   <button id="btn4">点我弹框</button>
 
+  <br>
+  <br>
+  <a href="/admin/to/login/page.html">管理员登录页</a>
+
 
   <script type="text/javascript">
       // Ajax 发数组第一种方式
