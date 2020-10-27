@@ -1,10 +1,12 @@
 package com.moc.crowd.mvc.handler;
 
+import com.github.pagehelper.PageInfo;
 import com.moc.crowd.constant.CrowdConstant;
 import com.moc.crowd.entity.Admin;
 import com.moc.crowd.service.api.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -38,6 +40,18 @@ public class AdminHandler {
         session.invalidate();
 
         return "redirect:/admin/to/login/page.html";
+    }
+
+    @RequestMapping("/admin/get/page.html")
+    public String getPageInfo(
+            @RequestParam(value = "keyword", defaultValue = "") String keyword,
+            @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
+            @RequestParam(value = "pageSize", defaultValue = "5") Integer pageSize,
+            ModelMap modelMap
+    ) {
+        PageInfo<Admin> pageInfo = adminService.getPageInfo(keyword, pageNum, pageSize);
+        modelMap.addAttribute(CrowdConstant.ATTR_NAME_PAGE_INFO, pageInfo);
+        return "admin-page";
     }
 
 }
