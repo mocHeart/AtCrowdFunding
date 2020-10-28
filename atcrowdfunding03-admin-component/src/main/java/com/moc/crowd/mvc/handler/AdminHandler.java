@@ -47,8 +47,7 @@ public class AdminHandler {
             @RequestParam(value = "keyword", defaultValue = "") String keyword,
             @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
             @RequestParam(value = "pageSize", defaultValue = "5") Integer pageSize,
-            ModelMap modelMap
-    ) {
+            ModelMap modelMap ) {
         PageInfo<Admin> pageInfo = adminService.getPageInfo(keyword, pageNum, pageSize);
         modelMap.addAttribute(CrowdConstant.ATTR_NAME_PAGE_INFO, pageInfo);
         return "admin-page";

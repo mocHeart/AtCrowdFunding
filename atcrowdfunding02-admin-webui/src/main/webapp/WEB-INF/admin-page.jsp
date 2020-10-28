@@ -3,6 +3,8 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <%@include file="/WEB-INF/include-head.jsp"%>
+<link rel="stylesheet" href="css/pagination.css">
+<script type="text/javascript" src="jquery/jquery.pagination.js"></script>
 <body>
 <%@include file="/WEB-INF/include-nav.jsp"%>
 <div class="container-fluid">
@@ -62,22 +64,13 @@
                 </c:forEach>
               </c:if>
               </tbody>
-              <tfoot>
-              <tr>
-                <td colspan="6" align="center">
-                  <ul class="pagination">
-                    <li class="disabled"><a href="#">上一页</a></li>
-                    <li class="active"><a href="#">1 <span class="sr-only">(current)</span></a></li>
-                    <li><a href="#">2</a></li>
-                    <li><a href="#">3</a></li>
-                    <li><a href="#">4</a></li>
-                    <li><a href="#">5</a></li>
-                    <li><a href="#">下一页</a></li>
-                  </ul>
-                </td>
-              </tr>
-
-              </tfoot>
+                <tfoot>
+                <tr>
+                  <td colspan="6" align="center">
+                    <div id="Pagination" class="pagination"><%--分页导航条--%></div>
+                  </td>
+                </tr>
+                </tfoot>
             </table>
           </div>
         </div>
@@ -85,6 +78,43 @@
     </div>
   </div>
 </div>
+<script type="text/javascript">
+  $(function () {
+      // 调用初始化导航条操作
+      initPagination();
+  });
+
+  // 初始化导航条
+  function initPagination() {
+      // 获取总记录数
+      var totalRecord = ${requestScope.pageInfo.total};
+      // 声明一个JSON对象存储Pagination要设置的属性
+      var properties = {
+          num_edge_entries: 3,                               // 边缘页数
+          num_display_entries: 5,                            // 主体页数
+          callback: pageSelectCallback,                      // “翻页”时的回调函数
+          items_per_page: ${requestScope.pageInfo.pageSize}, // 每页显示的条数
+          current_page: ${requestScope.pageInfo.pageNum - 1},// 当前页码（0开始计数）
+          prev_text: "上一页",                                // 上一页按钮的文本
+          next_text: "下一页"                                 // 下一页按钮的文本
+      };
+
+      // 生成页码导航条
+      $("#Pagination").pagination(totalRecord, properties);
+  }
+
+  // 点击分页导航条页码选项时的回调函数
+  // pageIndex 从0开始计数
+  function pageSelectCallback(pageIndex) {
+      // 根据PageIndex计数得到PageNum
+      var pageNum = pageIndex + 1;
+      // 跳转页面
+      window.location.href = "admin/get/page.html?pageNum=" + pageNum;
+      // 阻止超链接的默认行为
+      return false;
+  }
+
+</script>
 </body>
 
 </html>
