@@ -7,6 +7,7 @@ import com.moc.crowd.service.api.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -51,6 +52,15 @@ public class AdminHandler {
         PageInfo<Admin> pageInfo = adminService.getPageInfo(keyword, pageNum, pageSize);
         modelMap.addAttribute(CrowdConstant.ATTR_NAME_PAGE_INFO, pageInfo);
         return "admin-page";
+    }
+
+    @RequestMapping("admin/remove/{adminId}/{pageNum}/{keyword}.html")
+    public String remove(@PathVariable("adminId") Integer adminId,
+                         @PathVariable("pageNum") String pageNum,
+                         @PathVariable("keyword") String keyword) {
+        adminService.remove(adminId);
+        // 重定向回到原来的页面
+        return "redirect:/admin/get/page.html?pageNum=" + pageNum + "&keyword=" + keyword;
     }
 
 }
