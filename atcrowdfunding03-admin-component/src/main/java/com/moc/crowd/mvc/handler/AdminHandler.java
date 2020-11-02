@@ -48,7 +48,7 @@ public class AdminHandler {
             @RequestParam(value = "keyword", defaultValue = "") String keyword,
             @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
             @RequestParam(value = "pageSize", defaultValue = "5") Integer pageSize,
-            ModelMap modelMap ) {
+            ModelMap modelMap) {
         PageInfo<Admin> pageInfo = adminService.getPageInfo(keyword, pageNum, pageSize);
         modelMap.addAttribute(CrowdConstant.ATTR_NAME_PAGE_INFO, pageInfo);
         return "admin-page";
@@ -62,5 +62,12 @@ public class AdminHandler {
         // 重定向回到原来的页面
         return "redirect:/admin/get/page.html?pageNum=" + pageNum + "&keyword=" + keyword;
     }
+
+    @RequestMapping("/admin/save.html")
+    public String save(Admin admin) {
+        adminService.saveAdmin(admin);
+        return "redirect:/admin/get/page.html?pageNum=" + Integer.MAX_VALUE;
+    }
+
 
 }

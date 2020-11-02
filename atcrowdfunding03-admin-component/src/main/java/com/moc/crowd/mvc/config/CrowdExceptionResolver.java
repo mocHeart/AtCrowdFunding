@@ -2,6 +2,7 @@ package com.moc.crowd.mvc.config;
 
 import com.google.gson.Gson;
 import com.moc.crowd.constant.CrowdConstant;
+import com.moc.crowd.exception.LoginAcctAlreadyInUseException;
 import com.moc.crowd.exception.LoginFailedException;
 import com.moc.crowd.util.CrowdUtil;
 import com.moc.crowd.util.ResultEntity;
@@ -31,6 +32,14 @@ public class CrowdExceptionResolver {
                                                     HttpServletRequest request,
                                                     HttpServletResponse response) throws IOException {
         String viewName = "admin-login";
+        return commonResolve(viewName, exception, request, response);
+    }
+
+    @ExceptionHandler(value = LoginAcctAlreadyInUseException.class)
+    public ModelAndView resolveLoginAcctAlreadyInUseException(LoginAcctAlreadyInUseException exception,
+                                                    HttpServletRequest request,
+                                                    HttpServletResponse response) throws IOException {
+        String viewName = "admin-add";
         return commonResolve(viewName, exception, request, response);
     }
 
