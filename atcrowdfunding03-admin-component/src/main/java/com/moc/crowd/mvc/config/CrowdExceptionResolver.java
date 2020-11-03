@@ -2,6 +2,7 @@ package com.moc.crowd.mvc.config;
 
 import com.google.gson.Gson;
 import com.moc.crowd.constant.CrowdConstant;
+import com.moc.crowd.exception.CommonException;
 import com.moc.crowd.exception.LoginAcctAlreadyInUseException;
 import com.moc.crowd.exception.LoginFailedException;
 import com.moc.crowd.util.CrowdUtil;
@@ -21,6 +22,14 @@ public class CrowdExceptionResolver {
     // @ExceptionHandler 将一个具体的异常类型和一个方法关联起来
     @ExceptionHandler(value = NullPointerException.class)
     public ModelAndView resolveNullPointerException(NullPointerException exception,
+                                                    HttpServletRequest request,
+                                                    HttpServletResponse response) throws IOException {
+        String viewName = "system-error";
+        return commonResolve(viewName, exception, request, response);
+    }
+
+    @ExceptionHandler(value = CommonException.class)
+    public ModelAndView resolveCommonException(CommonException exception,
                                                     HttpServletRequest request,
                                                     HttpServletResponse response) throws IOException {
         String viewName = "system-error";

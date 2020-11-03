@@ -5,6 +5,7 @@ import com.github.pagehelper.PageInfo;
 import com.moc.crowd.constant.CrowdConstant;
 import com.moc.crowd.entity.Admin;
 import com.moc.crowd.entity.AdminExample;
+import com.moc.crowd.exception.CommonException;
 import com.moc.crowd.exception.LoginAcctAlreadyInUseException;
 import com.moc.crowd.exception.LoginFailedException;
 import com.moc.crowd.mapper.AdminMapper;
@@ -115,5 +116,24 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public void remove(Integer adminId) {
         adminMapper.deleteByPrimaryKey(adminId);
+    }
+
+    @Override
+    public Admin getAdminById(Integer adminId) {
+        return adminMapper.selectByPrimaryKey(adminId);
+    }
+
+    @Override
+    public void update(Admin admin) {
+        // "Selective" 表示有选择的更新，对于null值不更新
+        try {
+            adminMapper.updateByPrimaryKeySelective(admin);
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.info("异常类的全类名"+e.getClass().getName());
+            if (e instanceof DuplicateKeyException) {
+                throw new CommonException(CrowdConstant.MESSAGE_LOGIN_ACCT_ALREADY_IN_USE);
+            }
+        }
     }
 }
