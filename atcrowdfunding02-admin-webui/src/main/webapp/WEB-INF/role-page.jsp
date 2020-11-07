@@ -25,7 +25,7 @@
             <button id="searchBtn" type="button" class="btn btn-warning"><i class="glyphicon glyphicon-search"></i> 查询</button>
           </form>
           <button type="button" class="btn btn-danger" style="float:right;margin-left:10px;"><i class=" glyphicon glyphicon-remove"></i> 删除</button>
-          <button type="button" class="btn btn-primary" style="float:right;" onclick="window.location.href='form.html'"><i class="glyphicon glyphicon-plus"></i> 新增</button>
+          <button id="showAddModalBtn" type="button" class="btn btn-primary" style="float:right;"><i class="glyphicon glyphicon-plus"></i> 新增</button>
           <br>
           <hr style="clear:both;">
           <div class="table-responsive">
@@ -57,6 +57,9 @@
   </div>
 </div>
 
+<%-- 引入模态框 --%>
+<%@include file="/WEB-INF/modal-role-add.jsp"%>
+
 <script type="text/javascript">
     $(function () {
         // 1. 为分页准备初始化数据
@@ -69,7 +72,7 @@
     });
 </script>
 <script type="text/javascript" charset="utf-8" src="jquery/jquery.pagination.js"></script>
-<script type="text/javascript" charset="utf-8" src="/crowd/my-role.js"></script>
+<script type="text/javascript" charset="utf-8" src="/crowd/role-page.js"></script>
 </body>
 
 </html>

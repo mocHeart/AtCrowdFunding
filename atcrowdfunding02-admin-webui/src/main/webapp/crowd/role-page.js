@@ -14,6 +14,45 @@ function generatePage() {
         generatePage();
     });
 
+    // 4. 新增按钮绑定弹窗
+    $("#showAddModalBtn").click(function () {
+        // 弹出模态框
+        $("#roleAddModal").modal("show");
+
+    });
+
+    // 5. 保存按钮单击响应事件
+    $("#saveRoleBtn").click(function () {
+        var roleName = $.trim($("#roleAddModal [name=roleName]").val());
+        $.ajax({
+            url: "/role/save.json",
+            type: "post",
+            data: {
+                "name": roleName,
+            },
+            dataType: "json",
+            success: function (response) {
+                var result = response.result;
+                if (result == "SUCCESS") {
+                    layer.msg("操作成功！");
+                    // 重新加载分页数据
+                    window.pageNum = 9999999;
+                    generatePage();
+                }
+                if (result == "FAILED") {
+                    layer.msg("操作失败！" + response.statusText);
+                }
+            },
+            error: function (response) {
+                layer.msg(response.status + " " + response.statusText);
+            }
+        });
+        // 关闭模态框
+        $("#roleAddModal").modal("hide");
+        // 清空模态框数据
+        $("#roleAddModal [name=roleName]").val("");
+    });
+
 
 }
 

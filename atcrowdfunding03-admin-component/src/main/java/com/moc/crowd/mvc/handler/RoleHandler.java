@@ -28,7 +28,13 @@ public class RoleHandler {
 
         // 封装返回数据
         return ResultEntity.successWithData(pageInfo);
+    }
 
+    @RequestMapping("/role/save.json")
+    @ResponseBody
+    public ResultEntity<String> saveRole(Role role) {
+        roleService.saveRole(role);
+        return ResultEntity.successWithOutData();
     }
 
 
