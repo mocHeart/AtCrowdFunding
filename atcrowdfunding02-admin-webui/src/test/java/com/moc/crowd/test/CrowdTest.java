@@ -1,7 +1,9 @@
 package com.moc.crowd.test;
 
 import com.moc.crowd.entity.Admin;
+import com.moc.crowd.entity.Role;
 import com.moc.crowd.mapper.AdminMapper;
+import com.moc.crowd.mapper.RoleMapper;
 import com.moc.crowd.service.api.AdminService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,6 +31,9 @@ public class CrowdTest {
 
     @Autowired
     private AdminService adminService;
+
+    @Autowired
+    private RoleMapper roleMapper;
 
     @Test
     public void testConnection() throws SQLException {
@@ -65,6 +70,13 @@ public class CrowdTest {
     public void addAdminData() {
         for (int i = 0; i < 238; i++) {
             adminMapper.insert(new Admin(null, "loginAcct" + i, "userPswd" + i, "userName" + i, "email@" + 1, null));
+        }
+    }
+
+    @Test
+    public void testRoleSave() {
+        for (int i = 0; i < 136; i++) {
+            roleMapper.insert(new Role(null, "role" + i));
         }
     }
 
