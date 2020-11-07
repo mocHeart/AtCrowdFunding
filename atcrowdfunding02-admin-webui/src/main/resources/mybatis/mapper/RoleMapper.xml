@@ -67,7 +67,7 @@
     id, name
     </sql>
     <select id="selectRoleByKeyword" resultMap="BaseResultMap">
-        select id, name form t_role
+        select id, name from t_role
         where name like concat("%", #{keyword}, "%")
     </select>
     <select id="selectByExample" parameterType="com.moc.crowd.entity.RoleExample" resultMap="BaseResultMap">
