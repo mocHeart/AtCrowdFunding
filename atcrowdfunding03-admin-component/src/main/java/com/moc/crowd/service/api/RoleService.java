@@ -3,11 +3,16 @@ package com.moc.crowd.service.api;
 import com.github.pagehelper.PageInfo;
 import com.moc.crowd.entity.Role;
 
+import java.util.List;
+
 public interface RoleService {
 
-    public PageInfo<Role> getPageInfo(Integer pageNum, Integer pageSize, String keyword);
+    PageInfo<Role> getPageInfo(Integer pageNum, Integer pageSize, String keyword);
 
     void saveRole(Role role);
 
     void updateRole(Role role);
+
+    void removeRole(List<Integer> roleIdList);
+
 }

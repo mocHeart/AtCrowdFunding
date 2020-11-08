@@ -24,7 +24,7 @@
             </div>
             <button id="searchBtn" type="button" class="btn btn-warning"><i class="glyphicon glyphicon-search"></i> 查询</button>
           </form>
-          <button type="button" class="btn btn-danger" style="float:right;margin-left:10px;"><i class=" glyphicon glyphicon-remove"></i> 删除</button>
+          <button id="batchRemoveBtn" type="button" class="btn btn-danger" style="float:right;margin-left:10px;"><i class=" glyphicon glyphicon-remove"></i> 删除</button>
           <button id="showAddModalBtn" type="button" class="btn btn-primary" style="float:right;"><i class="glyphicon glyphicon-plus"></i> 新增</button>
           <br>
           <hr style="clear:both;">
@@ -33,7 +33,7 @@
               <thead>
               <tr>
                 <th width="30">#</th>
-                <th width="30"><input type="checkbox"></th>
+                <th width="30"><input id="summaryBox" type="checkbox"></th>
                 <th>名称</th>
                 <th width="100">操作</th>
               </tr>
@@ -60,6 +60,7 @@
 <%-- 引入模态框 --%>
 <%@include file="/WEB-INF/modal-role-add.jsp"%>
 <%@include file="/WEB-INF/modal-role-edit.jsp"%>
+<%@include file="/WEB-INF/modal-role-confirm.jsp"%>
 
 <script type="text/javascript">
     $(function () {
@@ -127,8 +128,6 @@
             $("#roleEditModal [name=roleName]").val(roleName);
         });
 
-        console.log("hahahhhaha");
-
         // 7. 更新模态框 - 保存按钮单击响应事件
         $("#updateRoleBtn").click(function () {
             var roleName = $("#roleEditModal [name=roleName]").val();
@@ -157,6 +156,89 @@
             // 关闭模态框
             $("#roleEditModal").modal("hide");
         });
+
+        // 8. 确认模态框 - 删除按钮
+        $("#removeRoleBtn").click(function () {
+            // 勾选的RoleId数组转化为JSON字符串
+            var requestBody = JSON.stringify(window.roleIdArray);
+            $.ajax({
+                url: "/role/remove/by/role/id/array.json",
+                type: "post",
+                data: requestBody,
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (response) {
+                    var result = response.result;
+                    if (result == "SUCCESS") {
+                        layer.msg("操作成功！");
+                        generatePage();
+                    }
+                    if (result == "FAILED") {
+                        layer.msg("操作失败！" + response.statusText);
+                    }
+                },
+                error: function (response) {
+                    layer.msg(response.status + " " + response.statusText);
+                }
+            });
+            $("#confirmModal").modal("hide");
+        });
+
+        // 9. 单个删除单击事件
+        $("#rolePageBody").on("click", ".removeBtn", function () {
+            var roleName = $(this).parent().prev().text();
+            var roleArray = [{
+                roleId: this.id,
+                roleName: roleName
+            }];
+
+            // 打开模态框
+            showConfirmModal(roleArray);
+        });
+
+        // 10. 总的复选框单击响应函数
+        $("#summaryBox").click(function () {
+            // 总的复选框状态
+            var currentStatus = this.checked;
+            // 设置其他复选框状态与总的一致
+            $(".itemBox").prop("checked", currentStatus);
+        });
+
+        // 11. 复选框全选、全不选的反向操作
+        $("#rolePageBody").on("click", ".itemBox", function () {
+            // 获取已经选中的.itemBox的数量
+            var checkedBoxCount = $(".itemBox:checked").length;
+            // 获取全部的.itemBox的数量
+            var totalBoxCount = $(".itemBox").length;
+            // 使用二者的比较结果设置总的复选框的状态
+            $("#summaryBox").prop("checked", checkedBoxCount == totalBoxCount);
+        });
+
+        // 12. 批量删除按钮单击事件
+        $("#batchRemoveBtn").click(function () {
+            var roleArray = [];
+
+            // 遍历选中的复选框
+            $(".itemBox:checked").each(function () {
+                // this为当前遍历得到的复选框
+                var roleId = this.id;
+                var roleName = $(this).parent().next().text();
+                roleArray.push({
+                    "roleId": roleId,
+                    "roleName": roleName
+                });
+            });
+
+            if (roleArray.length == 0) {
+                layer.msg("请至少选择一个进行删除！");
+                return;
+            }
+
+            // 打开模态框
+            showConfirmModal(roleArray);
+
+        });
+
 
 
     });

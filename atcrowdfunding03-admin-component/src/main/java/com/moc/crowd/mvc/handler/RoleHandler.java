@@ -6,9 +6,12 @@ import com.moc.crowd.service.api.RoleService;
 import com.moc.crowd.util.ResultEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.List;
 
 @Controller
 public class RoleHandler {
@@ -44,6 +47,11 @@ public class RoleHandler {
         return ResultEntity.successWithOutData();
     }
 
-
+    @RequestMapping("/role/remove/by/role/id/array.json")
+    @ResponseBody
+    public ResultEntity<String> removeByRoleIdArray(@RequestBody List<Integer> roleIdList) {
+        roleService.removeRole(roleIdList);
+        return ResultEntity.successWithOutData();
+    }
 
 }

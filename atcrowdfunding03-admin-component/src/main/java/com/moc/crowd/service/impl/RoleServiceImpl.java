@@ -3,6 +3,8 @@ package com.moc.crowd.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.moc.crowd.entity.Role;
+import com.moc.crowd.entity.RoleExample;
+import com.moc.crowd.entity.RoleExample.Criteria;
 import com.moc.crowd.mapper.RoleMapper;
 import com.moc.crowd.service.api.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,5 +39,13 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public void updateRole(Role role) {
         roleMapper.updateByPrimaryKey(role);
+    }
+
+    @Override
+    public void removeRole(List<Integer> roleIdList) {
+        RoleExample example = new RoleExample();
+        Criteria criteria = example.createCriteria();
+        criteria.andIdIn(roleIdList);
+        roleMapper.deleteByExample(example);
     }
 }
