@@ -1,10 +1,10 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
-<div id="roleAddModal" class="modal fade" tabindex="-1" role="dialog">
+<div id="roleEditModal" class="modal fade" tabindex="-1" role="dialog">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">角色新增</h4>
+        <h4 class="modal-title">角色更新</h4>
       </div>
       <div class="modal-body">
         <form class="form-signin" role="form">
@@ -14,7 +14,7 @@
         </form>
       </div>
       <div class="modal-footer">
-        <button id="saveRoleBtn" type="button" class="btn btn-primary">保存</button>
+        <button id="updateRoleBtn" type="button" class="btn btn-primary">更新</button>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->

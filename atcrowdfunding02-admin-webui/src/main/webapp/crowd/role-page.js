@@ -6,54 +6,6 @@ function generatePage() {
 
     // 2. 填充表格
     fillTableBody(pageInfo);
-
-    // 3. 给查询按钮绑定单击响应函数
-    $("#searchBtn").click(function () {
-        window.keyword = $("#keywordInput").val();
-        window.pageNum = 1;
-        generatePage();
-    });
-
-    // 4. 新增按钮绑定弹窗
-    $("#showAddModalBtn").click(function () {
-        // 弹出模态框
-        $("#roleAddModal").modal("show");
-
-    });
-
-    // 5. 保存按钮单击响应事件
-    $("#saveRoleBtn").click(function () {
-        var roleName = $.trim($("#roleAddModal [name=roleName]").val());
-        $.ajax({
-            url: "/role/save.json",
-            type: "post",
-            data: {
-                "name": roleName,
-            },
-            dataType: "json",
-            success: function (response) {
-                var result = response.result;
-                if (result == "SUCCESS") {
-                    layer.msg("操作成功！");
-                    // 重新加载分页数据
-                    window.pageNum = 9999999;
-                    generatePage();
-                }
-                if (result == "FAILED") {
-                    layer.msg("操作失败！" + response.statusText);
-                }
-            },
-            error: function (response) {
-                layer.msg(response.status + " " + response.statusText);
-            }
-        });
-        // 关闭模态框
-        $("#roleAddModal").modal("hide");
-        // 清空模态框数据
-        $("#roleAddModal [name=roleName]").val("");
-    });
-
-
 }
 
 // 远程访问服务器获取pageInfo数据
@@ -115,7 +67,7 @@ function fillTableBody(pageInfo) {
         var roleNameTd = "<td>" + roleName + "</td>";
 
         var checkBtn = "<button type='button' class='btn btn-success btn-xs'><i class=' glyphicon glyphicon-check'></i></button>";
-        var pencilBtn = "<button type='button' class='btn btn-primary btn-xs'><i class=' glyphicon glyphicon-pencil'></i></button>";
+        var pencilBtn = "<button type='button' id='"+roleId+"' class='btn btn-primary btn-xs pencilBtn'><i class=' glyphicon glyphicon-pencil'></i></button>";
         var removeBtn = "<button type='button' class='btn btn-danger btn-xs'><i class=' glyphicon glyphicon-remove'></i></button>";
 
         var buttonTd = "<td>" + checkBtn + " " + pencilBtn + " " + removeBtn + "</td>";

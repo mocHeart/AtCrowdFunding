@@ -37,6 +37,13 @@ public class RoleHandler {
         return ResultEntity.successWithOutData();
     }
 
+    @RequestMapping("/role/update.json")
+    @ResponseBody
+    public ResultEntity<String> updateRole(Role role) {
+        roleService.updateRole(role);
+        return ResultEntity.successWithOutData();
+    }
+
 
 
 }

@@ -59,6 +59,7 @@
 
 <%-- 引入模态框 --%>
 <%@include file="/WEB-INF/modal-role-add.jsp"%>
+<%@include file="/WEB-INF/modal-role-edit.jsp"%>
 
 <script type="text/javascript">
     $(function () {
@@ -69,6 +70,95 @@
 
         // 2. 调用执行分页函数，显示分页效果
         generatePage();
+
+        // 3. 给查询按钮绑定单击响应函数
+        $("#searchBtn").click(function () {
+            window.keyword = $("#keywordInput").val();
+            window.pageNum = 1;
+            generatePage();
+        });
+
+        // 4. 新增按钮绑定弹窗
+        $("#showAddModalBtn").click(function () {
+            // 弹出模态框
+            $("#roleAddModal").modal("show");
+
+        });
+
+        // 5. 新增模态框 - 保存按钮单击响应事件
+        $("#saveRoleBtn").click(function () {
+            var roleName = $.trim($("#roleAddModal [name=roleName]").val());
+            $.ajax({
+                url: "/role/save.json",
+                type: "post",
+                data: {
+                    "name": roleName,
+                },
+                dataType: "json",
+                success: function (response) {
+                    var result = response.result;
+                    if (result == "SUCCESS") {
+                        layer.msg("操作成功！");
+                        // 重新加载分页数据
+                        window.pageNum = 9999999;
+                        generatePage();
+                    }
+                    if (result == "FAILED") {
+                        layer.msg("操作失败！" + response.statusText);
+                    }
+                },
+                error: function (response) {
+                    layer.msg(response.status + " " + response.statusText);
+                }
+            });
+            // 关闭模态框
+            $("#roleAddModal").modal("hide");
+            // 清空模态框数据
+            $("#roleAddModal [name=roleName]").val("");
+        });
+
+        // 6. 编辑按钮绑定按钮响应函数  （jQuery动态生成的按钮on函数绑定）
+        // 给 【 #rolePageBody pencilBtn 】选择器所选的元素绑定事件
+        $("#rolePageBody").on("click", ".pencilBtn", function () {
+            $("#roleEditModal").modal("show");
+            var roleName = $(this).parent().prev().text();
+            // 保存时也能获取该数据
+            window.roleId = this.id;
+            $("#roleEditModal [name=roleName]").val(roleName);
+        });
+
+        console.log("hahahhhaha");
+
+        // 7. 更新模态框 - 保存按钮单击响应事件
+        $("#updateRoleBtn").click(function () {
+            var roleName = $("#roleEditModal [name=roleName]").val();
+            $.ajax({
+                url: "/role/update.json",
+                type: "post",
+                data: {
+                    "id": window.roleId,
+                    "name": roleName
+                },
+                dataType: "json",
+                success: function (response) {
+                    var result = response.result;
+                    if (result == "SUCCESS") {
+                        layer.msg("操作成功！");
+                        generatePage();
+                    }
+                    if (result == "FAILED") {
+                        layer.msg("操作失败！" + response.statusText);
+                    }
+                },
+                error: function (response) {
+                    layer.msg(response.status + " " + response.statusText);
+                }
+            });
+            // 关闭模态框
+            $("#roleEditModal").modal("hide");
+        });
+
+
     });
 </script>
 <script type="text/javascript" charset="utf-8" src="jquery/jquery.pagination.js"></script>
