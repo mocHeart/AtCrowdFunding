@@ -28,10 +28,22 @@
 </div>
 
 <script type="text/javascript" src="ztree/jquery.ztree.all-3.5.min.js"></script>
+<script type="text/javascript" src="crowd/menu-page.js"></script>
 <script type="text/javascript">
     $(function () {
         // 1. 创建JSON对象用于存储对zTree对象的设置
-        var setting = {};
+        var setting = {
+            view: {
+                addDiyDom: myAddDiyDom,           // 自定义树节点前的icon
+                addHoverDom: myAddHoverDom,       // 鼠标移入节点范围添加按钮组
+                removeHoverDom: myRemoveHoverDom  // 鼠标移出节点范围删除按钮组
+            },
+            data: {
+                key: {
+                    url: "#"     // 点击树节点不跳转
+                }
+            }
+        };
 
         // 2. 准备生成树形结构的JSON数据 (Ajax请求)
         $.ajax({
@@ -44,6 +56,7 @@
                     var zNodes = response.data;
                     // 3. 初始化树形结构
                     $.fn.zTree.init($("#treeDemo"), setting, zNodes);
+                    //console.log(zNodes);
                 }
                 if (result == "FAILED") {
                     layer.msg(response.message);
